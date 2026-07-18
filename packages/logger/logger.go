@@ -5,15 +5,10 @@ import (
 	"os"
 )
 
-type Config struct {
-	Service string
-	Env     string
-}
-
-func New(cfg Config) *slog.Logger {
+func New(service, environment string) *slog.Logger {
 	var handler slog.Handler
 
-	if cfg.Env == "production" {
+	if environment == "production" {
 		handler = slog.NewJSONHandler(os.Stdout,
 			&slog.HandlerOptions{
 				Level: slog.LevelInfo,
@@ -29,5 +24,5 @@ func New(cfg Config) *slog.Logger {
 
 	logger := slog.New(handler)
 
-	return logger.With(slog.String("service", cfg.Service))
+	return logger.With(slog.String("service", service))
 }
